@@ -1,0 +1,34 @@
+{
+  "name": "simple-js-ec-math",
+  "version": "1.0.0",
+  "description": "basic elliptic curve math in javascript",
+  "main": "index.js",
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "test": "node ./test/index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Azero123/simple-js-ecc.git"
+  },
+  "keywords": [
+    "elliptic",
+    "curve",
+    "cryptography",
+    "bitcoin",
+    "ecc",
+    "ecdsa",
+    "schnorr"
+  ],
+  "author": "Azero123",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Azero123/simple-js-ecc/issues"
+  },
+  "homepage": "https://github.com/Azero123/simple-js-ecc#readme",
+  "dependencies": {
+    "big-integer": "^1.6.42"
+  }
+}
