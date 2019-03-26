@@ -94,7 +94,7 @@ try {
     }
 
     for (privateKey in privateToPublic) {
-      const publicPoint = secp256k1.multiply(g, bigInt(privateKey, 16).toString())
+      const publicPoint = secp256k1.multiply(g, bigInt(privateKey, 16))
       try {
         if (bigInt(publicPoint.x).toString(16) !== privateToPublic[privateKey].x) {
           throw `scalar multiplication failed for ${privateKey} ${bigInt(publicPoint.x).toString(16)} ${privateToPublic[privateKey].x}`

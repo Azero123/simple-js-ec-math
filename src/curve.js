@@ -44,9 +44,7 @@ class ModCurve {
     return p3
   }
   multiply(p, s)  {
-    s = bigInt(s)
     let p_ = p
-    let s_ = s
 
     if (s.toString() === '1') {
       return p_
