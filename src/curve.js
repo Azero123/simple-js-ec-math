@@ -15,10 +15,10 @@ class ModCurve {
  
   add(p1, p2) {
     if (p1 === p2) {
-      return this.multiply(p1, 2)
+      return this.double(p1)
     }
-    const ys = this.modSet.subtract(p2.y, p1.y)
-    const xs = this.modSet.subtract(p2.x, p1.x)
+    const ys = p2.y.minus(p1.y)
+    const xs = p2.x.minus(p1.x)
     const s = this.modSet.divide(ys, xs)
     const x3 = this.modSet.subtract(this.modSet.subtract(this.modSet.multiply(s,s),p1.x),p2.x)
     const y3 = this.modSet.subtract(this.modSet.multiply(s, this.modSet.subtract(p1.x, x3)),p1.y)
@@ -52,34 +52,19 @@ class ModCurve {
       return p_
     }
 
-    const closest_doubling = (p, s) => {
-      this.postProcessings[p] = this.postProcessings[p] || {
-        p: {},
-        s: {}
-      }
-      const p_post_processing = this.postProcessings[p].p
-      const s_post_processing = this.postProcessings[p].s
-      let p_ = p
-      let s_ = bigInt('1')
-      let s_dbl
-      do {
-        s_dbl = s_post_processing[s_] || s_.multiply('2')
-        s_post_processing[s_] = s_dbl
-        if (s.greaterOrEquals(s_dbl)) {
-          s_ = s_dbl
-          p_ = p_post_processing[s_] || this.double(p_)
-          p_post_processing[s_] = p_
-        }
-      } while (s.greaterOrEquals(s_dbl))
+    const binaryS = s.toString(2)
+    const binarySLength = binaryS.length - 1
 
-      return { p: p_, s: s_ }
-    }
-
+    this.postProcessings[p] = this.postProcessings[p] || {}
+    const postProcessings = this.postProcessings[p]
     const addings = []
-    while (s_.greaterOrEquals('1')) {
-      const closest = closest_doubling(p, s_)
-      s_ = s_.minus(closest.s)
-      addings.push(closest.p)
+    let n = p
+    for (var i = binarySLength; i >= 0; i --) {
+      const char = binaryS[i]
+      if (char === '1') {
+        addings.push(n)
+      }
+      n = (postProcessings[n] || (postProcessings[n] = this.double(n)))
     }
 
     p_ = addings[0]

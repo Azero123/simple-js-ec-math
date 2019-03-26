@@ -31,10 +31,10 @@ try {
     ]
 
     for (let i = 1; i < tests.length; i++) {
-      if (smallCurve.multiply(g, i.toString()).x.toString() !== tests[i].x) {
+      if (smallCurve.multiply(g, bigInt(i)).x.toString() !== tests[i].x) {
         throw `curve multiplication failed for g${i} (x)`
       }
-      if (smallCurve.multiply(g, i.toString()).y.toString() !== tests[i].y) {
+      if (smallCurve.multiply(g, bigInt(i)).y.toString() !== tests[i].y) {
         throw `curve multiplication failed for g${i} (y)`
       }
     }
