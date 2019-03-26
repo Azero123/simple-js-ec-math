@@ -17,8 +17,8 @@ class ModCurve {
     if (p1 === p2) {
       return this.double(p1)
     }
-    const ys = p2.y.minus(p1.y)
-    const xs = p2.x.minus(p1.x)
+    const ys = this.modSet.subtract(p2.y, p1.y)
+    const xs = this.modSet.subtract(p2.x, p1.x)
     const s = this.modSet.divide(ys, xs)
     const x3 = this.modSet.subtract(this.modSet.subtract(this.modSet.multiply(s,s),p1.x),p2.x)
     const y3 = this.modSet.subtract(this.modSet.multiply(s, this.modSet.subtract(p1.x, x3)),p1.y)
