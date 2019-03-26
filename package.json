@@ -1,6 +1,6 @@
 {
   "name": "simple-js-ec-math",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "basic elliptic curve math in javascript",
   "main": "src/index.js",
   "directories": {

@@ -10,6 +10,7 @@ class ModCurve {
     this.p = p
     this.g = g
     this.modSet = new ModSet(p)
+    this.postProcessings = {}
   }
  
   add(p1, p2) {
@@ -51,21 +52,25 @@ class ModCurve {
       return p_
     }
 
-    const p_post_processing = {}
-    const s_post_processing = {}
     const closest_doubling = (p, s) => {
+      this.postProcessings[p] = this.postProcessings[p] || {
+        p: {},
+        s: {}
+      }
+      const p_post_processing = this.postProcessings[p].p
+      const s_post_processing = this.postProcessings[p].s
       let p_ = p
       let s_ = bigInt('1')
-      let s_dbl;
-        do {
-          s_dbl = s_post_processing[s_] || s_.multiply('2')
-          s_post_processing[s_] = s_dbl
-          if (s.greaterOrEquals(s_dbl)) {
-            s_ = s_dbl
-            p_ = p_post_processing[s_] || this.double(p_)
-            p_post_processing[s_] = p_
-          }
-        } while (s.greaterOrEquals(s_dbl))
+      let s_dbl
+      do {
+        s_dbl = s_post_processing[s_] || s_.multiply('2')
+        s_post_processing[s_] = s_dbl
+        if (s.greaterOrEquals(s_dbl)) {
+          s_ = s_dbl
+          p_ = p_post_processing[s_] || this.double(p_)
+          p_post_processing[s_] = p_
+        }
+      } while (s.greaterOrEquals(s_dbl))
 
       return { p: p_, s: s_ }
     }
