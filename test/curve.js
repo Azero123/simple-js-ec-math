@@ -41,6 +41,21 @@ try {
   })()
 
   ;(() => {
+    const fs = require('fs')
+
+    let preprocessing = {}
+    let previousPoint
+    const points = JSON.parse(fs.readFileSync('./secp256k1-preprocessing.json'))
+    const first = ModPoint.fromJSON(points[0])
+    preprocessing[first.toString()] = {}
+    for (let point of points) {
+        point = ModPoint.fromJSON(point)
+        if (previousPoint) {
+            preprocessing[first.toString()][previousPoint.toString()] = point
+        }
+        previousPoint = point
+    }
+    preprocessing[first.toString()] = {}
 
     const g = new ModPoint(
       bigInt('79BE667EF9DCBBAC55A06295CE870B07029BFCDB2DCE28D959F2815B16F81798', 16),
@@ -52,6 +67,7 @@ try {
       bigInt('FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFEBAAEDCE6AF48A03BBFD25E8CD0364141', 16),
       bigInt('2').pow('256').minus(bigInt('2').pow('32')).minus('977'),
       g,
+      preprocessing
     )
   
     const privateToPublic = {

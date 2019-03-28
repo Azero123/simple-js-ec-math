@@ -3,14 +3,14 @@ const ModSet = require('./modset.js')
 const ModPoint = require('./modpoint.js')
 
 class ModCurve {
-  constructor(a, b, n, p, g) {
+  constructor(a, b, n, p, g, preprocessing = {}) {
     this.a = a
     this.b = b
     this.n = n
     this.p = p
     this.g = g
     this.modSet = new ModSet(p)
-    this.postProcessings = {}
+    this.postProcessings = preprocessing
   }
  
   add(p1, p2) {
@@ -62,7 +62,7 @@ class ModCurve {
       if (char === '1') {
         addings.push(n)
       }
-      n = (postProcessings[n] || (postProcessings[n] = this.double(n)))
+      n = (postProcessings[n] || (postProcessings[n.toString()] = this.double(n)))
     }
 
     p_ = addings[0]

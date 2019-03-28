@@ -5,8 +5,14 @@ class ModPoint {
     this.x = x
     this.y = y
   }
+  static fromJSON(object) {
+    return new ModPoint(bigInt(object.x, 16), bigInt(object.y, 16))
+  }
+  toJSON() {
+    return { x: bigInt(this.x).toString(16), y: bigInt(this.y).toString(16) }
+  }
   toString() {
-    return JSON.stringify({ x: bigInt(this.x).toString(16), y: bigInt(this.y).toString(16) })
+    return JSON.stringify(this.toJSON())
   }
 }
 module.exports = ModPoint
