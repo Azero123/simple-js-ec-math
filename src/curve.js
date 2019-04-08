@@ -62,7 +62,8 @@ class ModCurve {
       if (char === '1') {
         addings.push(n)
       }
-      n = (postProcessings[n] || (postProcessings[n.toString()] = this.double(n)))
+      const nStr = n.x.toString()
+      n = (postProcessings[nStr] || (postProcessings[nStr] = this.double(n)))
     }
 
     p_ = addings[0]
