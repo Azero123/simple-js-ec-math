@@ -50,7 +50,13 @@ class ModCurve {
       return p_
     }
 
-    const binaryS = s.toString(2)
+    let binaryS
+    if (s instanceof bigInt) {
+      binaryS = s.toArray(2).value.join('')//(+s.toString()).toString(2)
+    }
+    else {
+      binaryS = s.toString(2)
+    }
     const binarySLength = binaryS.length - 1
 
     this.postProcessings[p] = this.postProcessings[p] || {}
