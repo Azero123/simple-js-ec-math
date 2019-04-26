@@ -24,6 +24,15 @@ class ModSet {
     const ap = this.power(a, this.p.minus('2'))
     return this.mod(c.multiply(ap))
   }
+  squareRoots(k) {
+    if (!k.modPow(this.p.minus('1').divide('2'), this.p).equals('1')) {
+      throw 'no integer square root'
+    }
+    const root = k.modPow(this.divide(this.p.add('1'), 4), this.p)
+    const negativeRoot = this.p.minus(root)
+
+    return [root, negativeRoot]
+  }
   power(a, b) {
     return bigInt(a).modPow(b, this.p)
   }
