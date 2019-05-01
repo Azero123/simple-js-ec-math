@@ -81,6 +81,17 @@ class ModCurve {
 
     return p_
   }
+  xToY(x, parity) {
+    const y2 = this.modSet.add(this.modSet.power(x, 3), this.b)
+    const y = this.modSet.squareRoots(y2)
+    if (parity === true) {
+      return y[1]
+    }
+    else if (parity === false) {
+      return y[0]
+    }
+    return y
+  }
   verify(point) {
     const verificationPoint = this.modSet.subtract(
       this.modSet.add(this.modSet.power(point.x, 3), this.b),

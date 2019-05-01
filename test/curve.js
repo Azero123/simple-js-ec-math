@@ -121,6 +121,12 @@ try {
         if (!secp256k1.verify(publicPoint)) {
           throw `public address verification failed for ${privateKey} ${privateToPublic[privateKey].pub} ${publicKey}`
         }
+        if (secp256k1.xToY(publicPoint.x).map(y => y.toString(16)).indexOf(privateToPublic[privateKey].y) === -1) {
+          throw `public address verification failed for ${privateKey} ${privateToPublic[privateKey].pub} ${publicKey}`
+        }
+        if (secp256k1.xToY(publicPoint.x, bigInt(privateToPublic[privateKey].y, 16).isOdd()) === privateToPublic[privateKey].y) {
+          throw `public address verification failed for ${privateKey} ${privateToPublic[privateKey].pub} ${publicKey}`
+        }
       }
       catch (e) {
         console.error(e)
