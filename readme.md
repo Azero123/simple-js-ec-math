@@ -19,32 +19,48 @@ const curve = new Curve(
 
 g is your starting point on the curve with g you can do abstract math instead of 1 + 2 you would add g + 2g as an example
 
-adding two points:
+## adding two points:
 ```
-curve.add(g, g)
-```
-
-subtracting two points:
-```
-curve.subtract(g, g)
+curve.add(<ModPoint>, <ModPoint>)
 ```
 
-multiplication:
+## subtracting two points:
 ```
-curve.multiply(g, 100)
+curve.subtract(<ModPoint>, <ModPoint>)
 ```
 
-doubling:
+## multiplication:
+```
+curve.multiply(<ModPoint>, <scalar>)
+// e.g.
+curve.multiply(g, 100>)
+```
+
+## doubling:
 ```
 curve.double(g)
 ```
 
 note division is not possible in elliptic curves. this is knows as the "elliptic curve discrete logarithm problem" (ECDLP) and is useful for security practices because it creates 1 way mathematics that are insolvable
 
-to verify a point is actually a viable solution to the curve the verify function has been provided.
+## to verify point is curve:
 ```
 const point = curve.multiply(g, 100)
 curve.verify(point)
+```
+
+## retrieving y coordinate from x coordinate:
+```
+curve.xToY(<x coordinate>, <is odd?>)
+
+curve.xToY('fe973c43d29ce39f940d3186a5a57c98231d59c7cedaa2387d07734777efed80') =>
+126044836b26d12486de99ec2754ba7f5835cf83e369533f1d1844adab9b2c2b, ed9fbb7c94d92edb79216613d8ab4580a7ca307c1c96acc0e2e7bb515464d004
+
+curve.xToY('fe973c43d29ce39f940d3186a5a57c98231d59c7cedaa2387d07734777efed80', true) =>
+126044836b26d12486de99ec2754ba7f5835cf83e369533f1d1844adab9b2c2b
+
+curve.xToY('8f68b9d2f63b5f339239c1ad981f162ee88c5678723ea3351b7b444c9ec4c0da', false) =>
+662a9f2dba063986de1d90c2b6be215dbbea2cfe95510bfdf23cbf79501fff82
 ```
 
 # contribute
