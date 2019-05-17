@@ -38,6 +38,7 @@ try {
         throw `curve multiplication failed for g${i} (y)`
       }
     }
+    console.log('- ✅ elliptic curve addition passed')
   })()
 
   ;(() => {
@@ -105,6 +106,37 @@ try {
         console.error(e)
       }
     }
+    console.log('- ✅ elliptic curve multiplication passed')
+  })()
+
+  ;(() => {
+    const g = new ModPoint(
+      bigInt('16'),
+      bigInt('5')
+    )
+    const smallCurve = new Curve(
+      bigInt('9'),
+      bigInt('17'),
+      bigInt('23'),
+      bigInt('23'),
+      g,
+    )
+
+    const g2 = smallCurve.add(g, g)
+    const g3 = smallCurve.add(g2, g)
+
+    if (smallCurve.subtract(g2, g).toString() !== g.toString()) {
+      throw 'subtraction failure'
+    }
+
+    if (smallCurve.subtract(g3, g2).toString() !== g.toString()) {
+      throw 'subtraction failure'
+    }
+
+    if (smallCurve.subtract(g3, g).toString() !== g2.toString()) {
+      throw 'subtraction failure'
+    }
+    console.log('- ✅ elliptic curve subtraction passed')
   })()
   console.log('✅ elliptic math tests passed')
 }
