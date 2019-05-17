@@ -99,5 +99,9 @@ class ModCurve {
     )
     return bigInt(verificationPoint).equals(0)
   }
+  // inverse(p) {
+  //   // a^p^n−2
+  //   return this.multiply(this.multiply(p, this.p), this.n.minus(2))
+  // }
 }
 module.exports = ModCurve
