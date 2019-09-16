@@ -110,32 +110,40 @@ try {
   })()
 
   ;(() => {
-    const g = new ModPoint(
-      bigInt('16'),
-      bigInt('5')
-    )
-    const smallCurve = new Curve(
-      bigInt('9'),
-      bigInt('17'),
-      bigInt('23'),
-      bigInt('23'),
-      g,
-    )
+    const secp256k1 = require('./secp256k1.js')
+    const g = secp256k1.g
 
-    const g2 = smallCurve.add(g, g)
-    const g3 = smallCurve.add(g2, g)
-
-    if (smallCurve.subtract(g2, g).toString() !== g.toString()) {
-      throw 'subtraction failure'
+    const secenerios = [
+      {
+        a: bigInt('56667564291994487828485102179753108844100655002175520390771394182'),
+        b: bigInt('102763905749049735238807018471543824205737799141527576421897199976847364233117')
+      },
+      {
+        a: bigInt('56667564291994487828485102179753108844100655002175520390771394182'),
+        b: bigInt('56667564291994487828485102179753108844100655002175520390771394183')
+      },
+    ]
+    let i = 0
+    while (i < 5) {
+      secenerios.push({
+        a: secp256k1.modSet.random(),
+        b: secp256k1.modSet.random()
+      })
+      i++
     }
+    secenerios.map(scenerio => {
+      const a = scenerio.a
+      const b = scenerio.b
+      const aG = secp256k1.multiply(g, a)
+      const bG = secp256k1.multiply(g, b)
+  
+      const c = a.minus(b).add(secp256k1.n).mod(secp256k1.n)
+      const cG = secp256k1.subtract(aG, bG)
 
-    if (smallCurve.subtract(g3, g2).toString() !== g.toString()) {
-      throw 'subtraction failure'
-    }
-
-    if (smallCurve.subtract(g3, g).toString() !== g2.toString()) {
-      throw 'subtraction failure'
-    }
+      if (secp256k1.multiply(g, c).toString() !== cG.toString()) {
+        throw 'subtract failed'
+      }
+    })
     console.log('- ✅ elliptic curve subtraction passed')
   })()
   console.log('✅ elliptic math tests passed')
