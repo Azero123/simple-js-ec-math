@@ -1,20 +1,18 @@
-const bigInt = require('big-integer')
-
 class ModPoint {
   constructor(x, y) {
     this.x = x
     this.y = y
   }
   static fromJSON(object) {
-    return new ModPoint(bigInt(object.x, 16), bigInt(object.y, 16))
+    return new ModPoint(BigInt('0x'+object.x), BigInt('0x'+object.y))
   }
   static fromString(string) {
     return ModPoint.fromJSON(JSON.parse(string))
   }
   static fromSec1(sec1, curve) {
     const mode = sec1.substr(0, 2)
-    const x = bigInt(sec1.substr(2, 64), 16)
-    let y = bigInt(sec1.substr(66, 130), 16)
+    const x = BigInt('0x'+sec1.substr(2, 64))
+    let y = BigInt('0x'+(sec1.substr(66, 130) || 0))
     
     const compressed = (mode === '03' || mode === '02')
     if (compressed) {
@@ -37,23 +35,23 @@ class ModPoint {
   get sec1Compressed() {
     return this._sec1Compressed || (this._sec1Compressed = 
       `${
-        bigInt(this.y).isOdd() ? '03' : '02'
+        this.y % 2n === 1n ? '03' : '02'
       }${
-        bigInt(this.x).toString(16).padStart(64, '0')
+        this.x.toString(16).padStart(64, '0')
       }`
     )
   }
   get sec1Uncompressed() {
     return this._sec1Uncompressed || (this._sec1Uncompressed = 
       `04${
-        bigInt(this.x).toString(16).padStart(64, '0')
+        this.x.toString(16).padStart(64, '0')
       }${
-        bigInt(this.y).toString(16).padStart(64, '0')
+        this.y.toString(16).padStart(64, '0')
       }`
     )
   }
   toJSON() {
-    return { x: bigInt(this.x).toString(16), y: bigInt(this.y).toString(16) }
+    return { x: this.x.toString(16), y: this.y.toString(16) }
   }
   toString() {
     return JSON.stringify(this.toJSON())
