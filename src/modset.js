@@ -35,7 +35,24 @@ class ModSet {
     return [root, negativeRoot]
   }
   power(a, b) {
-    return this.mod(a ** b)
+    try {
+      return this.mod(a ** b)
+    }
+    catch (e) {
+      let x = 1n
+      while (b > 0n) {
+        if (a === 0n) {
+          return 0n
+        }
+        if (b % 2n === 1n) {
+          x = this.multiply(x, a)
+        }
+        b = b / 2n
+        a = this.multiply(a, a)
+      }
+
+      return x
+    }
   }
 }
 

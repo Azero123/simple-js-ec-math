@@ -16,7 +16,7 @@ try {
     if (c !== 1n) {
         throw 'modular multiplication does not work'
     }
-  
+
     if (inP.multiply(5n, inP.multiply(5n, 5n)) !== inP.power(5n, 3n)) {
         throw 'modular power does not work'
     }
