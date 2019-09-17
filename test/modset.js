@@ -1,51 +1,53 @@
 try {
-    const bigInt = require('big-integer')
     const elliptic = require('../src/index.js')
     const ModSet = elliptic.ModSet  
+
   
-    const inP = new ModSet(bigInt('19'))
-    if (inP.add(bigInt('20'), bigInt('5')).toString() !== '6') {
+    const inP = new ModSet(19n)
+    if (inP.add(20n, 5n) !== 6n) {
         throw 'modular addition does not work'
     }
-    if (inP.subtract(bigInt('5'), bigInt('10')).toString() !== '14') {
+
+    if (inP.subtract(5n, 10n) !== 14n) {
         throw 'modular subtraction does not work'
     }
-    const c = inP.multiply(bigInt('4'), bigInt('5'))
-    if (c.toString() != '1') {
+
+    const c = inP.multiply(4n, 5n)
+    if (c !== 1n) {
         throw 'modular multiplication does not work'
     }
   
-    if (inP.multiply(bigInt('5'), inP.multiply(bigInt('5'), bigInt('5'))).toString() !== inP.power(bigInt('5'), bigInt('3')).toString()) {
+    if (inP.multiply(5n, inP.multiply(5n, 5n)) !== inP.power(5n, 3n)) {
         throw 'modular power does not work'
     }
   
-    if (inP.divide(bigInt(c), bigInt('4')).toString() !== '5') {
+    if (inP.divide(c, 4n) !== 5n) {
         throw 'modular division does not work (1)'
     }
   
-    if (inP.divide(bigInt(c), bigInt('5')).toString() !== '4') {
+    if (inP.divide(c, 5n) !== 4n) {
         throw 'modular division does not work (2)'
     }
 
-    let roots = inP.squareRoots(bigInt('16'))
-    if (roots[0].toString() !== '4' && roots[1].toString() !== '15') {
+    let roots = inP.squareRoots(16n)
+    if (roots[0] !== 4n && roots[1] !== 15n) {
         throw 'modular square root does not work'
     }
-    roots = inP.squareRoots(bigInt('25'))
-    if (roots[0].toString() !== '5' && roots[1].toString() !== '14') {
+    roots = inP.squareRoots(25n)
+    if (roots[0] !== 5n && roots[1] !== 14n) {
         throw 'modular square root does not work'
     }
-    roots = inP.squareRoots(bigInt('36'))
-    if (roots[0].toString() !== '6' && roots[1].toString() !== '13') {
+    roots = inP.squareRoots(36n)
+    if (roots[0] !== 6n && roots[1] !== 13n) {
         throw 'modular square root does not work'
     }
-    roots = inP.squareRoots(bigInt('49'))
-    if (roots[0].toString() !== '7' && roots[1].toString() !== '12') {
+    roots = inP.squareRoots(49n)
+    if (roots[0] !== 7n && roots[1] !== 12n) {
         throw 'modular square root does not work'
     }
     let threwError = false
     try {
-        inP.squareRoots(bigInt('13'))
+        inP.squareRoots(13n)
     }
     catch (e) {
         threwError = true

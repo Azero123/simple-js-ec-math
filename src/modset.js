@@ -1,4 +1,3 @@
-const bigInt = require('big-integer')
 const crypto = require('crypto')
 
 class ModSet {
@@ -6,35 +5,37 @@ class ModSet {
     this.p = p
   }
   random() {
-    return bigInt.fromArray([...crypto.randomBytes(64)])
+    return this.mod(BigInt('0x'+crypto.randomBytes(64).toString('hex')))
   }
   mod(n) {
-    return bigInt(n).mod(this.p).plus(this.p).mod(this.p)
+    return (n % this.p + this.p) % this.p
   }
   add(a, b) {
-    return this.mod(a.add(b))
+    return this.mod(a + b)
   }
   subtract(a, b) {
-    return this.mod(a.subtract(b))
+    return this.mod(a - b)
   }
   multiply(a, b)  {
-    return this.mod(a.multiply(b))
+    return this.mod(a * b) 
   }
   divide(c, a) {
-    const ap = this.power(a, this.p.minus('2'))
-    return this.mod(c.multiply(ap))
+    const ap = this.power(a, this.p - 2n)
+    return this.mod(this.multiply(c, ap))
   }
   squareRoots(k) {
-    if (!k.modPow(this.p.minus('1').divide('2'), this.p).equals('1')) {
+    this.p1 = this.p1 || (this.p - 1n) / 2n
+    if (this.power(k, this.p1) !== 1n) {
       throw 'no integer square root'
     }
-    const root = k.modPow(this.divide(this.p.add('1'), 4), this.p)
-    const negativeRoot = this.p.minus(root)
+    this.p2 = this.p2 || (this.p + 1n) / 4n
+    const root = this.power(k, this.p2)
+    const negativeRoot = this.p - root
 
     return [root, negativeRoot]
   }
   power(a, b) {
-    return bigInt(a).modPow(b, this.p)
+    return this.mod(a ** b)
   }
 }
 
