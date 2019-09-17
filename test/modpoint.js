@@ -1,6 +1,6 @@
 try {
     const elliptic = require('../src/index.js')
-    const secp256k1 = require('simple-js-secp256k1')
+    const secp256k1 = require('./secp256k1.js')
     const ModPoint = elliptic.ModPoint  
 
     let g = new ModPoint(

@@ -1,6 +1,6 @@
 {
   "name": "simple-js-ec-math",
-  "version": "1.7.2",
+  "version": "2.0.0",
   "description": "basic elliptic curve math in javascript",
   "main": "src/index.js",
   "directories": {
@@ -28,8 +28,5 @@
     "url": "https://github.com/Azero123/simple-js-ecc/issues"
   },
   "homepage": "https://github.com/Azero123/simple-js-ecc#readme",
-  "dependencies": {
-    "big-integer": "^1.6.43",
-    "simple-js-secp256k1": "github:Azero123/simple-js-secp256k1#master"
-  }
+  "dependencies": {}
 }
