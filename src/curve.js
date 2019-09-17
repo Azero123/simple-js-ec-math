@@ -1,4 +1,3 @@
-const bigInt = require('big-integer')
 const ModSet = require('./modset.js')
 const ModPoint = require('./modpoint.js')
 
@@ -26,37 +25,27 @@ class ModCurve {
     return p3
   }
   subtract(a, b) {
-    b = new ModPoint(b.x, this.modSet.multiply(b.y, '-1'))
+    b = new ModPoint(b.x, this.modSet.multiply(b.y, -1n))
     const c = this.add(a, b)
     return c
   }
   double(p) {
-    // s = (3 * Px ^ 2 +a ) / (2 * Py)
-    // RX = S ^ 2 - 2 * PX
-    // RY = -1 * (PY + S * ( RX - PX))
-
-    const sn = bigInt(p.x).pow('2').multiply('3').add(this.a)
-    const sd = bigInt('2').multiply(p.y)
+    const sn = p.x ** 2n * 3n + this.a
+    const sd = 2n * p.y
     const s = this.modSet.divide(sn,sd)
-    const x3 = this.modSet.mod(bigInt(s).pow('2').minus(bigInt(p.x).multiply('2')))
-    const y3 = this.modSet.mod(bigInt(s).multiply(bigInt(p.x).minus(x3)).minus(p.y))
+    const x3 = this.modSet.mod((s ** 2n - p.x * 2n))
+    const y3 = this.modSet.mod(s * (p.x - x3) - p.y)
     const p3 = new ModPoint(x3, y3)
     return p3
   }
   multiply(p, s)  {
     let p_ = p
 
-    if (s.toString() === '1') {
+    if (s === 1n) {
       return p_
     }
 
-    let binaryS
-    if (s instanceof bigInt) {
-      binaryS = s.toArray(2).value.join('')//(+s.toString()).toString(2)
-    }
-    else {
-      binaryS = s.toString(2)
-    }
+    let binaryS = s.toString(2)
     const binarySLength = binaryS.length - 1
 
     this.postProcessings[p] = this.postProcessings[p] || {}
@@ -82,7 +71,7 @@ class ModCurve {
     return p_
   }
   xToY(x, parity) {
-    const y2 = this.modSet.add(this.modSet.power(x, 3), this.b)
+    const y2 = this.modSet.add(this.modSet.power(x, 3n), this.b)
     const y = this.modSet.squareRoots(y2)
     if (parity === true) {
       return y[1]
@@ -94,10 +83,10 @@ class ModCurve {
   }
   verify(point) {
     const verificationPoint = this.modSet.subtract(
-      this.modSet.add(this.modSet.power(point.x, 3), this.b),
-      this.modSet.power(point.y, 2)
+      this.modSet.add(this.modSet.power(point.x, 3n), this.b),
+      this.modSet.power(point.y, 2n)
     )
-    return bigInt(verificationPoint).equals(0)
+    return verificationPoint === 0n
   }
   // inverse(p) {
   //   // a^p^n−2
