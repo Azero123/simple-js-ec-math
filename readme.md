@@ -4,17 +4,8 @@ this project is intended to make easier and faster crytography projects. it is i
 
 to create a new curve to do math on:
 ```
-const g = new ModPoint(
-    bigInt('16'),
-    bigInt('5')
-)
-const curve = new Curve(
-    bigInt('9'),
-    bigInt('17'),
-    bigInt('23'),
-    bigInt('23'),
-    g,
-)
+const g = new ModPoint(16n, 5n)
+const curve = new Curve(9n, 17n, 23n, 23n, g)
 ```
 
 g is your starting point on the curve with g you can do abstract math instead of 1 + 2 you would add g + 2g as an example
