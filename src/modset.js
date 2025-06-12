@@ -1,11 +1,27 @@
-const crypto = require('crypto')
+const crypto = globalThis.crypto || window.crypto;
 
 class ModSet {
   constructor(p) {
     this.p = p
   }
-  random() {
-    return this.mod(BigInt('0x'+crypto.randomBytes(64).toString('hex')))
+  random(allowInsecure = false) {
+    if (typeof crypto !== 'undefined' && crypto.randomBytes) {
+      return this.mod(BigInt('0x' + crypto.randomBytes(64).toString('hex')))
+    } else {
+      const array = new Uint8Array(64)
+      if (typeof crypto !== 'undefined' && crypto.getRandomValues) {
+        crypto.getRandomValues(array)
+      } else {
+        if (allowInsecure) {
+          for (let i = 0; i < array.length; i++) {
+            array[i] = Math.floor(Math.random() * 256)
+          }
+        } else {
+          throw new Error('No secure random number generator available')
+        }
+      }
+      return (new Buffer(crypto.getRandomValues(array))).toString('hex')
+    }
   }
   mod(n) {
     return (n % this.p + this.p) % this.p

@@ -55,6 +55,16 @@ try {
     if (threwError === false) {
         throw 'square root should have thrown an error when given an invalid number to square root'
     }
+
+    const random = inP.random()
+    if (random < 0n || random >= inP.p) {
+        throw 'modular random number is out of bounds'
+    }
+    
+    const insecureRandom = inP.random(true)
+    if (insecureRandom < 0n || insecureRandom >= inP.p) {
+        throw 'modular insecure random number is out of bounds'
+    }
   
     console.log('✅ modular math tests passed')
 }
