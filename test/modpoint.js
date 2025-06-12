@@ -4,8 +4,8 @@ try {
     const ModPoint = elliptic.ModPoint  
 
     let g = new ModPoint(
-        BigInt('0x79be667ef9dcbbac55a06295ce870b07029bfcdb2dce28d959f2815b16f81798', 16),
-        BigInt('0x483ada7726a3c4655da4fbfc0e1108a8fd17b448a68554199c47d08ffb10d4b8', 16)
+        0x79be667ef9dcbbac55a06295ce870b07029bfcdb2dce28d959f2815b16f81798n,
+        0x483ada7726a3c4655da4fbfc0e1108a8fd17b448a68554199c47d08ffb10d4b8n
     )
     if (g.toString() !== '{"x":"79be667ef9dcbbac55a06295ce870b07029bfcdb2dce28d959f2815b16f81798","y":"483ada7726a3c4655da4fbfc0e1108a8fd17b448a68554199c47d08ffb10d4b8"}') {
         throw 'mod point toString() failed'
